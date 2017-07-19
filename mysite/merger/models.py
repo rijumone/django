@@ -3,8 +3,6 @@ from __future__ import unicode_literals
 
 from django.db import models
 
-# Create your models here.
-
 class Branch(models.Model):
 	name = models.CharField(max_length=45)
 
@@ -33,12 +31,15 @@ class Merge(models.Model):
 	resolved_on = models.DateTimeField(null=True,blank=True)
 
 	def __str__(self):
-		return "branch: %s, repo: %s" % (self.branch,self.repos)
+		return "id: %s, branch: %s, repo: %s" % (self.id,self.branch,self.repos)
 
 
 class Comment(models.Model):
 	merge = models.ForeignKey(Merge, on_delete=models.CASCADE)
 	content = models.CharField(max_length=255)
 	added_on = models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return "for merge_id: %s, comment: %s" % (self.merge.id,self.content)
 
 # b.merge_set.create(repos="proposalcp",environment="qc",merge_type="merge",)

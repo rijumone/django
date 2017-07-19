@@ -1,0 +1,9 @@
+{% if latest_merge_list %}
+	<ul>
+	{% for merge in latest_merge_list %}
+		<li><a href="{% url 'merger:merge' merge.id %}">{{merge.branch}}</a></li>
+	{% endfor %}
+	</ul>
+{% else %}
+	<p>no merges in db</p>
+{% endif %}

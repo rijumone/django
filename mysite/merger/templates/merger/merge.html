@@ -1,0 +1,11 @@
+<h1>merge_id: {{ merge.id }}</h1>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+branch: {{ merge.branch }}
+<br />
+repos: {{ merge.repos }}
+
+<form action="{% url 'merger:resolve' merge.id %}" method="POST">
+{% csrf_token %}
+	<input type="checkbox" name="resolve" /> Resolve
+	<input type="submit" />
+</form>
