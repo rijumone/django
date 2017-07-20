@@ -3,9 +3,10 @@
 branch: {{ merge.branch }}
 <br />
 repos: {{ merge.repos }}
-
-<form action="{% url 'merger:resolve' merge.id %}" method="POST">
-{% csrf_token %}
-	<input type="checkbox" name="resolve" /> Resolve
-	<input type="submit" />
-</form>
+{% if not merge.resolved_on %}
+	<form action="{% url 'merger:resolve' merge.id %}" method="POST">
+	{% csrf_token %}
+		<input type="checkbox" name="resolve" /> Resolve
+		<input type="submit" />
+	</form>
+{% endif %}

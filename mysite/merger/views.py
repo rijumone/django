@@ -1,13 +1,28 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-# from django.shortcuts import render
-from django.http import HttpResponse, Http404
+from django.utils import timezone
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.template import loader
 from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
+from django.views import generic
 
 from .models import Merge
 
+class IndexView(generic.ListView):
+	template_name = 'merger/index.html'
+	context_object_name = 'latest_merge_list'
+
+	def get_queryset(self):
+		""" Return the last 3 merges """
+		return Merge.objects.order_by('-raised_on')[:3]
+
+class MergeView(generic.DetailView):
+	model = Merge
+	template_name = 'merger/merge.html'
+
+"""
 def index(request):
 	latest_merge_list = Merge.objects.order_by('-raised_on')[:2]
 	# print(latest_merges_list)
@@ -30,5 +45,11 @@ def merge(request, merge_id):
 	return render(request, "merger/merge.html", context)
 	# return HttpResponse("this page belongs to merge: %s" % merge_id)
 
+"""
+
 def resolve(request, merge_id):
-	return HttpResponse("%s resolved" % merge_id)
+	merge = get_object_or_404(Merge, pk=merge_id)
+	merge.resolved_on = timezone.now()
+	merge.save()
+	return HttpResponseRedirect(reverse('merger:merge',args=(merge.id,)))
+	# return HttpResponse("%s resolved" % merge_id)
