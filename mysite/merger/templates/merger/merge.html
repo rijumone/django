@@ -1,3 +1,7 @@
+{% extends 'merger/base.html' %}
+
+{% block body_block %}
+
 <h1>merge_id: {{ merge.id }}</h1>
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 branch: {{ merge.branch }}
@@ -10,3 +14,5 @@ repos: {{ merge.repos }}
 		<input type="submit" />
 	</form>
 {% endif %}
+
+{% endblock %}
